@@ -1,0 +1,107 @@
+---
+// Header-I: Sleek Dark Mode - Otimizado para tons contrastados
+import siteConfig from '../data/siteConfig.json';
+import { getAllPosts } from '../lib/posts';
+
+const { name, menu: baseMenu = [] } = siteConfig;
+
+// Buscar categorias REAIS do banco de dados (SSR)
+const allPosts = await getAllPosts();
+const realCategories = [...new Set(allPosts.map(p => p.category))].filter(Boolean);
+
+// Injetar categorias reais no item "Blog" do menu
+const menu = baseMenu.map((item: any) => {
+  if (item.label.toLowerCase() === 'blog' || item.href === '/blog') {
+    return {
+      ...item,
+      children: realCategories.length
+        ? realCategories.map(cat => ({
+            label: cat,
+            href: `/categoria/${cat.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')}`
+          }))
+        : undefined,
+    };
+  }
+  return item;
+});
+---
+<header class="bg-dark text-white border-b border-white/5 sticky top-0 z-[100]">
+  <div class="max-w-6xl mx-auto px-4 lg:px-6 h-16 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 group transition-all">
+      <div class="h-1 bg-primary w-0 group-hover:w-full transition-all duration-300 absolute -top-0 left-0"></div>
+      <span class="text-xl font-black uppercase tracking-[0.2em]">{name}</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-2">
+      {menu.map((item: any) => (
+        item.children?.length ? (
+          <div class="relative group flex items-center h-full">
+            <button type="button" class="px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-white/50 group-hover:text-white group-hover:bg-white/5 rounded transition-all flex items-center gap-2 cursor-pointer">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary/40 block"></span>
+              {item.label}
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div class="absolute top-full left-0 z-[110] pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+              <div class="w-48 bg-dark border border-white/10 shadow-2xl rounded-lg py-3">
+                <a href={item.href} class="block px-6 py-1 text-[9px] font-black text-white/20 uppercase tracking-[0.2em] mb-2 border-b border-white/5 pb-2">Conteúdo</a>
+                {item.children.map((child: any) => (
+                  <a href={child.href} class="block px-6 py-2.5 text-[10px] font-bold text-white/60 hover:text-primary hover:bg-white/5 transition-colors uppercase tracking-widest">
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class="px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-white/50 hover:text-white hover:bg-white/5 rounded transition-all flex items-center gap-2"
+          >
+            <span class="w-1.5 h-1.5 rounded-full bg-primary/40 block"></span>
+            {item.label}
+          </a>
+        )
+      ))}
+      <a
+        href="/blog"
+        class="ml-4 px-6 py-2 bg-white text-dark text-[11px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+      >
+        Acessar Blog
+      </a>
+    </nav>
+
+    <!-- Mobile Button -->
+    <button id="menu-btn-i" class="md:hidden p-2 text-white/70 hover:text-white" aria-label="Menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div id="mobile-menu-i" class="hidden md:hidden bg-[#0d1117] border-t border-white/5 px-6 py-8 animate-in fade-in slide-in-from-top-4 duration-300">
+    <div class="grid grid-cols-1 gap-6">
+      {menu.map((item: any) => (
+        <div>
+          <a href={item.href} class="text-2xl font-black uppercase tracking-widest text-white/40 hover:text-primary transition-colors">{item.label}</a>
+          {item.children?.length ? (
+            <div class="pl-4 mt-4 space-y-3 border-l border-white/10">
+              {item.children.map((child: any) => (
+                <a href={child.href} class="block text-sm font-bold text-white/50 hover:text-primary uppercase tracking-widest">{child.label}</a>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ))}
+      <div class="pt-8 border-t border-white/5">
+         <a href="/blog" class="block w-full py-4 bg-primary text-white text-center font-black uppercase tracking-widest rounded shadow-xl shadow-primary/20">Entrar no Blog</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.getElementById('menu-btn-i')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu-i')?.classList.toggle('hidden');
+  });
+</script>

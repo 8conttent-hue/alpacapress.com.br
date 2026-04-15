@@ -1,0 +1,53 @@
+{
+  "name": "ALPACAPRESS",
+  "slug": "alpacapress.com.br",
+  "description": "Renata Lisboa é uma empresária motivada que fundou a Alpacapress aos 32 anos de idade. Ela fundou a empresa com o objetivo de compartilhar seu conhecimento na área. Nascida e criada no Brasil, Renata sempre se interessou por negócios e moda. Depois de trabalhar na indústria da moda por vários anos, ela decidiu fundar sua própria empresa. A Alpacapress é agora um negócio de sucesso que proporciona empregos para dezenas de pessoas no Brasil e no Mundo. Renata se orgulha de poder apoiar a economia de seu país e espera continuar expandindo seus negócios nos próximos anos.",
+  "url": "https://alpacapress.com.br",
+  "niche": "Saúde",
+  "keywords": "Renata Lisboa e uma empresaria motivada que fundou a Alpacapress aos 32",
+  "email": "contato@alpacapress.com.br",
+  "palette": "rose",
+  "colors": {
+    "primary": "#e11d48",
+    "accent": "#9f1239",
+    "dark": "#4c0519"
+  },
+  "headerContrast": "light",
+  "font": "inter",
+  "fontFamily": "'Inter', sans-serif",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
+  "components": {
+    "header": "Header-I",
+    "hero": "Hero-H",
+    "features": "Features-H",
+    "about": "About-H",
+    "posts": "Posts-B",
+    "footer": "Footer-A",
+    "sobre": "Sobre-J",
+    "contato": "Contato-J"
+  },
+  "menu": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog"
+    },
+    {
+      "label": "Sobre",
+      "href": "/sobre"
+    },
+    {
+      "label": "Contato",
+      "href": "/contato"
+    }
+  ],
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "twitter": "",
+    "youtube": ""
+  }
+}

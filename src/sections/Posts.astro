@@ -1,0 +1,64 @@
+---
+// Posts-B: Lista com thumbnail à esquerda
+import { getAllPosts } from '../lib/posts';
+interface Props { title: string; limit: number; btnText: string; btnLink: string; }
+const { title, limit, btnText, btnLink } = Astro.props;
+
+const posts = (await getAllPosts()).slice(0, limit);
+---
+<section class="py-20 bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <span class="text-xs font-bold uppercase tracking-widest text-primary mb-2 block">Blog</span>
+      <h2 class="text-3xl md:text-4xl font-black text-dark">{title}</h2>
+    </div>
+
+    <!-- Lista -->
+    <div class="space-y-4">
+      {posts.map((post, i) => (
+        <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-all flex gap-0">
+          <!-- Thumbnail -->
+          <div class="w-40 md:w-48 shrink-0 bg-gradient-to-br from-primary/10 to-accent/5 overflow-hidden">
+            {post.heroImage ? (
+              <img
+                src={post.heroImage}
+                alt={post.title}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+            ) : (
+              <div class="w-full h-full flex items-center justify-center text-4xl font-black text-primary/20">
+                {(i + 1).toString().padStart(2, '0')}
+              </div>
+            )}
+          </div>
+
+          <!-- Conteúdo -->
+          <div class="p-5 flex flex-col justify-center flex-1">
+            <div class="text-xs font-bold text-primary uppercase tracking-widest mb-1">
+              {post.category || 'Blog'}
+            </div>
+            <h3 class="font-bold text-dark leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
+              <a href={`/${post.slug}`}>{post.title}</a>
+            </h3>
+            <p class="text-sm text-gray-500 line-clamp-2 mb-3 hidden md:block">{post.description}</p>
+            <div class="text-xs text-gray-400">
+              {new Date(post.pubDate).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-10">
+      <a
+        href={btnLink}
+        class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity"
+      >
+        {btnText} →
+      </a>
+    </div>
+  </div>
+</section>

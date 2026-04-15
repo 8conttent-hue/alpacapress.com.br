@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "Sobre Nós",
+    "description": "Conheça o ALPACAPRESS"
+  },
+  "hero": {
+    "title": "Sobre Nós",
+    "subtitle": "Fundada por Renata Lisboa, Alpacapress é uma expressão de paixão e comprometimento com a saúde e bem-estar. Desde 32 anos, Renata tem liderado a empresa com um objetivo claro: proporcionar produtos de qualidade que melhoram a vida das pessoas."
+  },
+  "content": "A Alpacapress é mais do que uma simples empresa; é um sonho realizado por Renata Lisboa, que decidiu unir sua paixão por saúde e rotina empresarial. Nascida e criada no Brasil, Renata acredita que negócios devem ter um impacto positivo na sociedade, e é por isso que a Alpacapress se orgulha de seu papel na economia local e global.",
+  "mission": "Fornecer produtos de saúde que melhorem a qualidade de vida, promovendo bem-estar e desenvolvimento sustentável.",
+  "image": "/images/sobre.jpg",
+  "stats": [
+    {
+      "value": "500+",
+      "label": "Artigos"
+    },
+    {
+      "value": "50k+",
+      "label": "Leitores"
+    },
+    {
+      "value": "10+",
+      "label": "Especialistas"
+    }
+  ],
+  "team": []
+}

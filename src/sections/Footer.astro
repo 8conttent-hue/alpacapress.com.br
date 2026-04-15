@@ -1,0 +1,63 @@
+---
+// Footer-A: Multi-coluna
+import siteConfig from '../data/siteConfig.json';
+const { name, email = '', menu = [], legal = {} } = siteConfig as any;
+const year = new Date().getFullYear();
+---
+<footer class="bg-dark text-white">
+  <div class="max-w-6xl mx-auto px-4 py-16">
+    <div class="grid md:grid-cols-4 gap-8 mb-12">
+      <!-- Col 1: Brand -->
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-black text-sm">
+            {name.charAt(0).toUpperCase()}
+          </div>
+          <span class="font-bold text-lg">{name}</span>
+        </div>
+        <p class="text-white/60 text-sm leading-relaxed mb-4">
+          Conteúdo de qualidade para informar e inspirar.
+        </p>
+        {email && (
+          <a href={`mailto:${email}`} class="text-primary text-sm hover:underline">{email}</a>
+        )}
+      </div>
+
+      <!-- Col 2: Links -->
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Navegação</h4>
+        <ul class="space-y-2.5">
+          {menu.map((item: any) => (
+            <li>
+              <a href={item.href} class="text-white/60 hover:text-white text-sm transition-colors">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Col 3: Legal -->
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Legal</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/privacidade" class="text-white/60 hover:text-white text-sm transition-colors">Privacidade</a></li>
+          <li><a href="/termos" class="text-white/60 hover:text-white text-sm transition-colors">Termos de Uso</a></li>
+          <li><a href="/contato" class="text-white/60 hover:text-white text-sm transition-colors">Contato</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Blog -->
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">Blog</h4>
+        <ul class="space-y-2.5">
+          <li><a href="/blog" class="text-white/60 hover:text-white text-sm transition-colors">Ver Blog</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-white/40 text-sm">© {year} {name}. Todos os direitos reservados.</p>
+      <p class="text-white/30 text-xs">Feito com ♥ no Brasil</p>
+    </div>
+  </div>
+</footer>

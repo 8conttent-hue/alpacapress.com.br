@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "ALPACAPRESS — Transformando o Mercado de Saúde",
+    "description": "A Alpacapress é o seu aliado em saúde e bem-estar."
+  },
+  "hero": {
+    "title": "Transformando o Mercado de Saúde",
+    "subtitle": "A Alpacapress é o seu aliado em saúde e bem-estar.",
+    "btnText": "Conheça nossos produtos",
+    "bgImage": "/images/hero.jpg",
+    "btnLink": "/blog"
+  },
+  "features": {
+    "title": "Por que escolher a Alpacapress?",
+    "items": [
+      {
+        "icon": "🌱",
+        "title": "Qualidade Superior",
+        "desc": "Nossos produtos são desenvolvidos com os melhores ingredientes, garantindo eficácia e segurança."
+      },
+      {
+        "icon": "🤝",
+        "title": "Compromisso Social",
+        "desc": "Geramos empregos e apoiamos a economia local, contribuindo para o desenvolvimento do nosso país."
+      },
+      {
+        "icon": "💡",
+        "title": "Inovação Constante",
+        "desc": "Estamos sempre em busca de inovações para oferecer soluções que atendam às suas necessidades."
+      }
+    ]
+  },
+  "about": {
+    "title": "Sobre a Alpacapress",
+    "desc": "Fundada por Renata Lisboa, Alpacapress é uma expressão de paixão e comprometimento com a saúde e bem-estar. Desde 32 anos, Renata tem liderado a empresa com um objetivo claro: proporcionar produtos de qualidade que melhoram a vida das pessoas.",
+    "stats": [
+      {
+        "value": "10+",
+        "label": "Anos de experiência no mercado"
+      },
+      {
+        "value": "50+",
+        "label": "Empregos gerados"
+      },
+      {
+        "value": "10k+",
+        "label": "Clientes satisfeitos"
+      }
+    ],
+    "image": "/images/about.jpg",
+    "btnText": "Saiba Mais",
+    "btnLink": "/sobre"
+  },
+  "posts": {
+    "title": "Últimos Artigos",
+    "limit": 3,
+    "btnText": "Ver Blog",
+    "btnLink": "/blog"
+  }
+}
