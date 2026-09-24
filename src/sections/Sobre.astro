@@ -7,7 +7,6 @@ interface Props {
   content?: string;
   image: string;
   stats?: Stat[];
-  content?: string;
 }
 const { title, subtitle, content, image, stats } = Astro.props;
 const desc = content || subtitle || '';
