@@ -55,13 +55,15 @@ export function formatContentToHtml(rawContent: string): string {
 
 const DOMAIN = 'alpacapress.com.br';
 
-export async function getPosts(): Promise<Post[]> {
+// `limit` evita trazer o acervo inteiro: o ORDER BY no banco estoura o
+// statement_timeout do Postgres, e a ordenacao e feita em memoria.
+export async function getPosts(limit = 100): Promise<Post[]> {
   try {
     const { data, error } = await supabase
       .from('network_posts')
       .select('id,slug,title,meta_description,featured_image,published_at,domain')
       .eq('domain', DOMAIN)
-      .limit(100);
+      .limit(limit);
 
     if (!error && data && data.length > 0) {
       return (data as Post[]).sort(
