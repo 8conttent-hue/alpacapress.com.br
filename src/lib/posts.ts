@@ -61,7 +61,8 @@ export async function getPosts(): Promise<Post[]> {
       .from('network_posts')
       .select('*')
       .eq('domain', DOMAIN)
-      .order('published_at', { ascending: false });
+      .order('published_at', { ascending: false })
+      .limit(50);
 
     if (!error && data && data.length > 0) {
       return data as Post[];
