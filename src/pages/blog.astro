@@ -1,16 +1,16 @@
 ---
-import { getPosts } from '../lib/posts';
+import { getPostsPage, countPosts } from '../lib/posts';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../sections/Header.astro';
 import Footer from '../sections/Footer.astro';
 
 const PER_PAGE = 6;
-// Traz o acervo uma vez e pagina em memoria: ORDER BY/range no banco
-// estoura o statement_timeout do Postgres.
-const all = await getPosts(100);
-const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+// Busca so a pagina atual: o banco nao tem indice e ORDER BY/range no
+// servidor estoura o statement_timeout do Postgres.
+const total = await countPosts();
+const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
 const current = Math.min(Math.max(1, Number(Astro.url.searchParams.get('page')) || 1), totalPages);
-const posts = all.slice((current - 1) * PER_PAGE, current * PER_PAGE);
+const posts = await getPostsPage((current - 1) * PER_PAGE, PER_PAGE);
 const pageUrl = (n: number) => (n === 1 ? '/blog' : `/blog?page=${n}`);
 
 const prev = current > 1 ? current - 1 : null;
@@ -61,7 +61,7 @@ const next = current < totalPages ? current + 1 : null;
         ))}
       </div>
 
-      {all.length === 0 && (
+      {posts.length === 0 && (
         <div class="text-center py-20 text-gray-400">
           <p class="text-xl">Nenhum artigo publicado ainda.</p>
         </div>

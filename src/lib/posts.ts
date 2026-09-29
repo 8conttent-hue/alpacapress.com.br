@@ -120,6 +120,109 @@ export async function getPosts(limit = 100): Promise<Post[]> {
   }
 }
 
+// Busca somente a pagina pedida (range), sem ORDER BY no banco: o
+// statement_timeout do Postgres estoura com order por published_at.
+export async function getPostsPage(offset: number, perPage: number): Promise<Post[]> {
+  const cache = getEdgeCache();
+  const cacheKey = new Request(
+    `https://cache.local/posts-page?domain=${DOMAIN}&offset=${offset}&per=${perPage}`
+  );
+
+  if (cache) {
+    const hit = await cache.match(cacheKey);
+    if (hit) return (await hit.json()) as Post[];
+  }
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), QUERY_TIMEOUT_MS);
+
+    const { data, error } = await supabase
+      .from('network_posts')
+      .select('id,slug,title,meta_description,featured_image,published_at,domain')
+      .eq('domain', DOMAIN)
+      .range(offset, offset + perPage - 1)
+      .abortSignal(controller.signal);
+
+    clearTimeout(timer);
+
+    const posts =
+      !error && data && data.length > 0
+        ? (data as Post[]).sort(
+            (a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
+          )
+        : [];
+
+    if (cache) {
+      await cache.put(
+        cacheKey,
+        new Response(JSON.stringify(posts), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': `public, max-age=${posts.length > 0 ? CACHE_TTL_SECONDS : 30}`,
+          },
+        })
+      );
+    }
+
+    return posts;
+  } catch (err) {
+    return [];
+  }
+}
+
+// Total de artigos, para saber quantas paginas existem.
+// Usa Content-Range no HEAD, que e barato (nao traz as linhas).
+export async function countPosts(): Promise<number> {
+  const cache = getEdgeCache();
+  const cacheKey = new Request(`https://cache.local/posts-count?domain=${DOMAIN}`);
+
+  if (cache) {
+    const hit = await cache.match(cacheKey);
+    if (hit) return Number(await hit.text()) || 0;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), QUERY_TIMEOUT_MS);
+
+    const res = await fetch(
+      `${supabase.supabaseUrl}/rest/v1/network_posts?select=id&domain=eq.${DOMAIN}`,
+      {
+        method: 'HEAD',
+        headers: {
+          apikey: supabase.supabaseKey,
+          Authorization: `Bearer ${supabase.supabaseKey}`,
+          Prefer: 'count=exact',
+          Range: '0-0',
+        },
+        signal: controller.signal,
+      }
+    );
+
+    clearTimeout(timer);
+
+    const range = res.headers.get('content-range') || '';
+    const total = Number(range.split('/')[1] || 0);
+
+    if (total > 0 && cache) {
+      await cache.put(
+        cacheKey,
+        new Response(String(total), {
+          headers: {
+            'Content-Type': 'text/plain',
+            'Cache-Control': `public, max-age=${CACHE_TTL_SECONDS}`,
+          },
+        })
+      );
+    }
+
+    return total;
+  } catch (err) {
+    return 0;
+  }
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
     const { data, error } = await supabase
