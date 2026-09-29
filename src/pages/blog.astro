@@ -79,19 +79,12 @@ const next = current < totalPages ? current + 1 : null;
             </a>
           )}
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
-            <a
-              href={pageUrl(n)}
-              aria-current={n === current ? 'page' : undefined}
-              class={`min-w-10 px-3 py-2 rounded-xl text-sm font-bold border transition-colors ${
-                n === current
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white border-gray-200 text-dark hover:border-primary hover:text-primary'
-              }`}
-            >
-              {n}
-            </a>
-          ))}
+          <span
+            class="px-4 py-2 text-sm font-bold text-gray-500"
+            aria-current="page"
+          >
+            Página {current} de {totalPages}
+          </span>
 
           {next && (
             <a
